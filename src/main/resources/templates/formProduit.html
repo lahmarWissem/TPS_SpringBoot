@@ -39,6 +39,7 @@
 								th:value="${produit.dateCreation}" />
 							<span th:errors=${produit.dateCreation} class="text-danger"> </span>
 						</div>
+						<div th:if="${mode=='edit'}">
 						<div class="form-group">
 							<label class="control-label">Categorie :</label>
 							<select type="text" name="categorie" class="form-control"
@@ -48,6 +49,7 @@
 
 								<option th:each="c:${categories}" th:if="${mode=='new'}" th:value="${c.idCat}"th:text="${c.nomCat}"></option>
 							</select>
+						</div>
 						</div>
 
 

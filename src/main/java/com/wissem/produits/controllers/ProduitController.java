@@ -1,6 +1,7 @@
 package com.wissem.produits.controllers;
 
 import com.wissem.produits.entities.Categorie;
+import com.wissem.produits.service.CategorieService;
 
 
 import java.text.ParseException;
@@ -25,6 +26,11 @@ import com.wissem.produits.service.ProduitService;
 public class ProduitController {
 	@Autowired
 	ProduitService produitService;
+	
+	@Autowired
+	CategorieService CategorieService;
+	
+	
 
 	@RequestMapping("/showCreate")
 	public String showCreate(ModelMap modelMap) {
@@ -141,5 +147,37 @@ public class ProduitController {
 		modelMap.addAttribute("categories", cats);
 		return "ListeCategorie";
 		}
-
+		
+		@RequestMapping("/supprimerCategorie")
+		public String supprimerCategorie(@RequestParam("id") Long id,
+		 ModelMap modelMap)
+		{ 
+			CategorieService.deleteCategorieById(id);
+		List<Categorie> cats = CategorieService.findAll();
+		modelMap.addAttribute("categories", cats);
+		return "ListeCategorie";
+		}
+		
+		@RequestMapping("/saveCategorie")
+		public String saveCategorie(@ModelAttribute("categorie") Categorie categorie,ModelMap modelMap) throws ParseException 
+		{
+		Categorie saveCategorie = CategorieService.saveCategorie(categorie);
+		return "redirect:/ListeCategorie";
+		}
+		
+		@RequestMapping("/modifierCategorie")
+		public String editerCategorie(@RequestParam("id") Long id,ModelMap modelMap)
+		{
+		Categorie c= CategorieService.getCategorie(id);
+		modelMap.addAttribute("categories", c);
+		modelMap.addAttribute("mode", "edit");
+		return "formCategorie";
+		}
+		@RequestMapping("/updateCategorie")
+		public String updateCategorie(@ModelAttribute("categorie") Categorie categorie,ModelMap modelMap) throws ParseException {
+			CategorieService.updateCategorie(categorie);
+			 List<Categorie> cats = CategorieService.findAll();
+			 modelMap.addAttribute("categories", cats);
+			return "ListeCat";
+			}
 	}
